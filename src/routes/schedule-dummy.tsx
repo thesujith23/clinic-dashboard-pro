@@ -181,44 +181,50 @@ export default function ScheduleDummyPage() {
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   return (
-    <div className="relative min-h-[calc(100vh-5rem)] bg-slate-50">
-      <div className="relative flex flex-col min-h-0 w-full max-w-[1000px] mx-auto p-4 md:px-6 py-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="flex items-center justify-between mb-6 shrink-0 bg-white border border-slate-200 px-5 py-4 rounded-xl shadow-sm">
+    <div className="relative min-h-[calc(100vh-5rem)] overflow-hidden bg-slate-50/50">
+      {/* Premium Background Blobs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-400/20 blur-[120px] pointer-events-none" />
+
+      <div className="relative flex flex-col min-h-0 w-full max-w-[1400px] mx-auto p-4 md:px-8 py-6 animate-in fade-in slide-in-from-bottom-4 duration-500 z-10">
+        <div className="flex items-center justify-between mb-8 shrink-0 bg-white/40 backdrop-blur-xl border border-white/60 p-6 rounded-3xl shadow-sm">
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" asChild className="h-8 w-8 shrink-0 rounded-lg bg-white border-slate-200 hover:bg-slate-50">
+            <Button variant="outline" size="icon" asChild className="h-10 w-10 shrink-0 rounded-full bg-white/60 border-slate-200 hover:bg-white">
               <Link to="/">
-                <ArrowLeft className="h-4 w-4 text-slate-700" />
+                <ArrowLeft className="h-5 w-5 text-slate-700" />
               </Link>
             </Button>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-900">Doctor Schedule Settings</h1>
-              <p className="text-xs text-slate-500 font-medium mt-0.5">Configure availabilities, time slots, and blocked dates</p>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">Doctor Schedule Settings</h1>
+              <p className="text-sm text-slate-500 mt-1 font-medium">Configure availabilities, time slots, and blocked dates in real-time.</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100 transition-all duration-300">
+          <div className="flex items-center gap-3 bg-white/60 backdrop-blur-md px-4 py-2.5 rounded-full border border-slate-200/60 shadow-sm transition-all duration-300">
             {isSaving ? (
-              <><Loader2 className="h-3.5 w-3.5 text-blue-600 animate-spin" /> <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Syncing</span></>
+              <><Loader2 className="h-4 w-4 text-blue-500 animate-spin" /> <span className="text-sm font-medium text-slate-600">Syncing changes...</span></>
             ) : (
-              <><div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Saved</span></>
+              <><div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> <span className="text-sm font-medium text-slate-600">Saved just now</span></>
             )}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 pb-12">
         
         {/* Left Column: General Settings & Weekly Schedule */}
-        <div className="flex flex-col gap-6">
+        <div className="xl:col-span-7 flex flex-col gap-8">
           
-          <Card className="shadow-sm border-slate-200 bg-white overflow-hidden">
-            <CardHeader className="bg-white border-b border-slate-100 pb-3 pt-4 px-5">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <div className="p-1.5 bg-blue-50 rounded-md"><User className="h-3.5 w-3.5 text-blue-600" /></div>
+          <Card className="glass-card shadow-lg shadow-blue-900/5 border-white/60 bg-white/60 backdrop-blur-xl overflow-hidden hover:shadow-xl transition-all duration-300">
+            <div className="h-1.5 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
+            <CardHeader className="bg-white/40 border-b border-white/60 pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <div className="p-2 bg-blue-100 rounded-lg"><User className="h-4 w-4 text-blue-600" /></div>
                 Assigned Doctor
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-4 px-5 pb-5">
+            <CardContent className="pt-6">
+              <Label className="text-sm font-semibold text-slate-700 mb-2 block">Select Doctor to Configure</Label>
               <Select value={selectedDoctorId} onValueChange={setSelectedDoctorId}>
-                <SelectTrigger className="w-full h-10 bg-white border-slate-200 shadow-sm text-sm transition-all rounded-lg">
+                <SelectTrigger className="w-full h-14 bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-sm text-base transition-all focus:ring-2 focus:ring-blue-500/20 rounded-xl">
                   <SelectValue placeholder="Select a doctor" />
                 </SelectTrigger>
                 <SelectContent>
@@ -240,51 +246,52 @@ export default function ScheduleDummyPage() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm border-slate-200 bg-white overflow-hidden">
-            <CardHeader className="bg-white border-b border-slate-100 pb-3 pt-4 px-5">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <div className="p-1.5 bg-indigo-50 rounded-md"><Clock className="h-3.5 w-3.5 text-indigo-600" /></div>
-                Weekly Availability
+          <Card className="glass-card shadow-lg shadow-indigo-900/5 border-white/60 bg-white/60 backdrop-blur-xl hover:shadow-xl transition-all duration-300">
+            <CardHeader className="bg-white/40 border-b border-white/60 pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <div className="p-2 bg-indigo-100 rounded-lg"><Clock className="h-4 w-4 text-indigo-600" /></div>
+                Booking Time Frame
               </CardTitle>
+              <CardDescription className="font-medium text-slate-500">Set the weekly availability and working hours.</CardDescription>
             </CardHeader>
-            <CardContent className="pt-4 px-5 pb-5 space-y-3">
+            <CardContent className="pt-6 space-y-4">
               {schedule.map((day, index) => (
-                <div key={day.day} className={`flex items-center justify-between p-3 rounded-lg border transition-all duration-300 gap-3
-                  ${day.isOpen ? 'bg-white border-slate-200 shadow-sm' : 'bg-slate-50 border-slate-100 opacity-80'}`}>
-                  <div className="flex items-center gap-3 w-[100px]">
+                <div key={day.day} className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl border transition-all duration-300 gap-4
+                  ${day.isOpen ? 'bg-white/80 border-slate-200/60 shadow-sm hover:shadow-md' : 'bg-slate-50/50 border-slate-100 opacity-80'}`}>
+                  <div className="flex items-center gap-3 min-w-[120px]">
                     <Switch
                       checked={day.isOpen}
                       onCheckedChange={(checked) => handleScheduleChange(index, "isOpen", checked)}
-                      className="data-[state=checked]:bg-indigo-600 scale-90"
+                      className="data-[state=checked]:bg-indigo-500"
                     />
-                    <Label className={`font-semibold text-sm ${day.isOpen ? 'text-slate-800' : 'text-slate-400'}`}>
+                    <Label className={`font-semibold text-base ${day.isOpen ? 'text-slate-900' : 'text-slate-400'}`}>
                       {day.day}
                     </Label>
                   </div>
                   
                   {day.isOpen ? (
-                    <div className="flex items-center gap-2 flex-1 justify-end animate-in fade-in duration-200">
-                      <div className="flex items-center bg-white border border-slate-200 rounded-md overflow-hidden">
+                    <div className="flex items-center gap-3 flex-1 sm:justify-end animate-in fade-in zoom-in-95 duration-200">
+                      <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 transition-all">
                         <Input
                           type="time"
                           value={day.startTime}
                           onChange={(e) => handleScheduleChange(index, "startTime", e.target.value)}
-                          className="w-24 h-8 border-0 bg-transparent text-[13px] font-medium text-slate-700 px-2"
+                          className="w-32 h-10 border-0 bg-transparent shadow-none focus-visible:ring-0 text-sm font-medium text-slate-700"
                         />
                       </div>
-                      <span className="text-slate-400 font-medium text-[11px] uppercase">to</span>
-                      <div className="flex items-center bg-white border border-slate-200 rounded-md overflow-hidden">
+                      <span className="text-slate-400 font-medium text-sm px-1">to</span>
+                      <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 transition-all">
                         <Input
                           type="time"
                           value={day.endTime}
                           onChange={(e) => handleScheduleChange(index, "endTime", e.target.value)}
-                          className="w-24 h-8 border-0 bg-transparent text-[13px] font-medium text-slate-700 px-2"
+                          className="w-32 h-10 border-0 bg-transparent shadow-none focus-visible:ring-0 text-sm font-medium text-slate-700"
                         />
                       </div>
                     </div>
                   ) : (
-                    <div className="flex-1 flex justify-end">
-                      <Badge variant="outline" className="text-slate-400 bg-slate-50 border-slate-200 font-medium px-2 py-0 text-[11px]">Closed</Badge>
+                    <div className="flex-1 flex sm:justify-end">
+                      <Badge variant="outline" className="text-slate-400 bg-slate-50 border-slate-200 font-medium px-4 py-1 text-sm">Closed</Badge>
                     </div>
                   )}
                 </div>
@@ -294,37 +301,38 @@ export default function ScheduleDummyPage() {
         </div>
 
         {/* Right Column: Duration, Blocked Dates, Details */}
-        <div className="flex flex-col gap-6">
+        <div className="xl:col-span-5 flex flex-col gap-8">
           
-          <Card className="shadow-sm border-slate-200 bg-white overflow-hidden">
-            <CardHeader className="bg-white border-b border-slate-100 pb-3 pt-4 px-5">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <div className="p-1.5 bg-orange-50 rounded-md"><CalendarIcon className="h-3.5 w-3.5 text-orange-600" /></div>
+          <Card className="glass-card shadow-lg shadow-orange-900/5 border-white/60 bg-white/60 backdrop-blur-xl hover:shadow-xl transition-all duration-300">
+            <CardHeader className="bg-white/40 border-b border-white/60 pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <div className="p-2 bg-orange-100 rounded-lg"><CalendarIcon className="h-4 w-4 text-orange-600" /></div>
                 Blocked Dates
               </CardTitle>
+              <CardDescription className="font-medium text-slate-500">Select specific dates when the doctor is unavailable.</CardDescription>
             </CardHeader>
-            <CardContent className="pt-4 px-5 pb-5">
-              <div className="border border-slate-200 rounded-xl p-4 bg-slate-50 shadow-sm w-full">
-                <div className="flex items-center justify-between mb-4">
+            <CardContent className="pt-6">
+              <div className="border border-white/60 rounded-3xl p-6 bg-white/80 shadow-sm w-full backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-6">
                   <Button
-                    variant="ghost" size="icon" className="h-8 w-8 rounded-md hover:bg-slate-200"
+                    variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-slate-100"
                     onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
                   >
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-5 w-5" />
                   </Button>
-                  <span className="font-bold text-slate-800 text-sm">
+                  <span className="font-bold text-slate-800 text-lg">
                     {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                   </span>
                   <Button
-                    variant="ghost" size="icon" className="h-8 w-8 rounded-md hover:bg-slate-200"
+                    variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-slate-100"
                     onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
                   >
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-5 w-5" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-7 gap-1 text-center mb-1">
+                <div className="grid grid-cols-7 gap-1 text-center mb-2">
                   {weekDays.map((d) => (
-                    <div key={d} className="text-[11px] font-bold text-slate-400 py-1 uppercase">{d}</div>
+                    <div key={d} className="text-sm font-semibold text-slate-400 py-2">{d}</div>
                   ))}
                 </div>
                 <div className="grid grid-cols-7 gap-2 text-center">
@@ -357,24 +365,24 @@ export default function ScheduleDummyPage() {
               </div>
 
               {blockedDates.size > 0 && (
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <Label className="text-[10px] font-bold text-slate-500 mb-2 uppercase tracking-wider block">Selected ({blockedDates.size})</Label>
-                  <div className="flex flex-wrap gap-1.5">
+                <div className="mt-8 animate-in fade-in duration-300 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                  <Label className="text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider block">Selected Blocked Dates ({blockedDates.size})</Label>
+                  <div className="flex flex-wrap gap-2">
                     {Array.from(blockedDates).sort().map((dateStr) => {
                       const date = new Date(dateStr);
                       const formatted = date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
                       return (
-                        <Badge key={dateStr} variant="secondary" className="bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 pl-2 pr-1 py-0.5 gap-1 text-[11px] font-semibold">
+                        <Badge key={dateStr} variant="secondary" className="bg-white text-orange-700 hover:bg-orange-50 border border-orange-200 shadow-sm pl-3 pr-1.5 py-1.5 gap-2 text-sm font-medium">
                           {formatted}
                           <div
-                            className="bg-orange-200 hover:bg-orange-500 hover:text-white rounded-md p-0.5 cursor-pointer transition-colors"
+                            className="bg-orange-100 hover:bg-orange-500 hover:text-white rounded-full p-1 cursor-pointer transition-colors"
                             onClick={() => {
                               const newSelected = new Set(blockedDates);
                               newSelected.delete(dateStr);
                               setBlockedDates(newSelected);
                             }}
                           >
-                            <X className="h-3 w-3" />
+                            <X className="h-3.5 w-3.5" />
                           </div>
                         </Badge>
                       );
@@ -385,17 +393,17 @@ export default function ScheduleDummyPage() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm border-slate-200 bg-white overflow-hidden">
-            <CardHeader className="bg-white border-b border-slate-100 pb-3 pt-4 px-5">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <div className="p-1.5 bg-emerald-50 rounded-md"><Clock className="h-3.5 w-3.5 text-emerald-600" /></div>
+          <Card className="glass-card shadow-lg shadow-emerald-900/5 border-white/60 bg-white/60 backdrop-blur-xl hover:shadow-xl transition-all duration-300">
+            <CardHeader className="bg-white/40 border-b border-white/60 pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <div className="p-2 bg-emerald-100 rounded-lg"><Clock className="h-4 w-4 text-emerald-600" /></div>
                 Appointment Details
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-4 px-5 pb-5">
-              <div className="space-y-2">
-                <Label className="text-[11px] uppercase tracking-wider font-bold text-slate-500">Duration per slot</Label>
-                <div className="flex items-center gap-2">
+            <CardContent className="pt-6 space-y-6">
+              <div className="space-y-3">
+                <Label className="text-sm font-semibold text-slate-700">Appointment Duration</Label>
+                <div className="flex items-center gap-3 bg-white/80 p-2 rounded-2xl border border-white/60 shadow-sm">
                   <Input
                     type="number"
                     value={duration}
@@ -404,7 +412,7 @@ export default function ScheduleDummyPage() {
                       setIsSaving(true);
                       setTimeout(() => { setIsSaving(false); setLastSaved(new Date()); }, 400);
                     }}
-                    className="w-20 bg-white border-slate-200 h-9 text-sm font-medium text-center"
+                    className="w-24 bg-transparent border-slate-200/60 h-12 text-base font-medium text-center rounded-xl"
                     min={1}
                   />
                   <Select 
@@ -415,7 +423,7 @@ export default function ScheduleDummyPage() {
                       setTimeout(() => { setIsSaving(false); setLastSaved(new Date()); }, 400);
                     }}
                   >
-                    <SelectTrigger className="flex-1 bg-white border-slate-200 h-9 text-sm">
+                    <SelectTrigger className="flex-1 bg-transparent border-slate-200/60 h-12 text-base rounded-xl">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>

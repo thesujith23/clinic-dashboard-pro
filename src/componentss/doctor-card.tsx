@@ -76,23 +76,23 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
     .toUpperCase();
 
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md border-slate-200">
-      <CardHeader className="flex flex-row items-center gap-3 pb-2 pt-4 px-4">
-        <Avatar className="h-10 w-10 ring-1 ring-slate-100 shadow-sm">
+    <Card className="group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-md border-slate-200">
+      <CardHeader className="flex flex-row items-center gap-3 pb-2 pt-5">
+        <Avatar className="h-12 w-12 ring-2 ring-primary/10">
           <AvatarFallback
-            className={`bg-gradient-to-br ${doctor.accent} text-white font-semibold text-sm`}
+            className={`bg-gradient-to-br ${doctor.accent} text-white font-semibold`}
           >
             {initials}
           </AvatarFallback>
         </Avatar>
         <div className="min-w-0">
-          <h3 className="font-bold text-sm leading-tight text-slate-800 truncate">{doctor.name}</h3>
-          <p className="text-[11px] font-medium text-slate-500">{doctor.specialty}</p>
+          <h3 className="font-semibold leading-tight truncate">{doctor.name}</h3>
+          <p className="text-xs text-muted-foreground">{doctor.specialty}</p>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3 px-4 pb-4">
+      <CardContent className="space-y-4">
         <div>
-          <p className="text-[10px] uppercase font-bold text-slate-400 mb-1.5 tracking-wider">
+          <p className="text-xs font-medium text-muted-foreground mb-2">
             Available days
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -100,7 +100,7 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
               <Badge
                 key={day}
                 variant="secondary"
-                className="bg-blue-50/50 text-blue-700 hover:bg-blue-100/50 border border-blue-100/50 text-[10px] px-1.5 py-0 font-medium"
+                className="bg-primary/5 text-primary hover:bg-primary/10"
               >
                 {dayShort[day] || day}
               </Badge>
@@ -108,25 +108,25 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
           </div>
         </div>
         <div>
-          <p className="text-[10px] uppercase font-bold text-slate-400 mb-1.5 tracking-wider">
+          <p className="text-xs font-medium text-muted-foreground mb-2">
             Time slots
           </p>
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             {doctor.slots.map((slot) => (
               <div
                 key={slot}
-                className="flex items-center text-xs text-slate-600 font-medium"
+                className="flex items-center text-sm text-muted-foreground"
               >
-                <Clock className="mr-1.5 h-3 w-3 text-slate-400" />
+                <Clock className="mr-2 h-3.5 w-3.5" />
                 {slot}
               </div>
             ))}
           </div>
         </div>
-        <div className="pt-1">
-          <Button asChild size="sm" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm h-8 text-xs font-medium">
+        <div className="pt-2">
+          <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
             <Link to="/schedule" state={{ doctorName: doctor.name }}>
-              <Calendar className="mr-1.5 h-3.5 w-3.5" />
+              <Calendar className="mr-2 h-4 w-4" />
               Manage Schedule
             </Link>
           </Button>
