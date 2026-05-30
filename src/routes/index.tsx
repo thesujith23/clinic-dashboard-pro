@@ -7,6 +7,9 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="grid gap-8">
+        {/* Stats above doctor cards */}
+        <StatsRow />
+
         <section className="space-y-4">
           <div className="flex items-center justify-between border-b pb-4">
             <div className="flex items-center gap-3">
@@ -26,9 +29,6 @@ export default function DashboardPage() {
             ))}
           </div>
         </section>
-
-        {/* Stats below doctor cards */}
-        <StatsRow />
 
         <section className="space-y-4">
           <div className="flex items-center justify-between border-b pb-4">
