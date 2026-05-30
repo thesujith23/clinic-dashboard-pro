@@ -1,7 +1,7 @@
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/componentss/ui/sheet";
 import { Badge } from "@/componentss/ui/badge";
 import { Button } from "@/componentss/ui/button";
-import { CalendarDays, Clock, User, Stethoscope, Mail, Phone, X, Building } from "lucide-react";
+import { CalendarDays, Clock, User, Stethoscope, Mail, Phone, X, Building, MapPin, CreditCard, Cake } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export type Appointment = {
@@ -86,6 +86,43 @@ export function AppointmentSidePanel({ isOpen, onClose, appointment }: Appointme
               <p className="text-sm font-medium text-gray-900">
                 {appointment.doctor}
               </p>
+            </div>
+          </div>
+
+          {/* Patient Email */}
+          <div className="flex items-start gap-3">
+            <Mail className="h-5 w-5 text-gray-500 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-gray-500">Patient Email</p>
+              <p className="text-sm font-medium text-gray-900">patient@email.com</p>
+            </div>
+          </div>
+
+          {/* Date of Birth */}
+          <div className="flex items-start gap-3">
+            <Cake className="h-5 w-5 text-gray-500 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-gray-500">Date of Birth</p>
+              <p className="text-sm font-medium text-gray-900">03-15-1990</p>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="flex items-start gap-3">
+            <MapPin className="h-5 w-5 text-gray-500 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-gray-500">Location</p>
+              <p className="text-sm font-medium text-gray-900">Biomed Clinic, 45 Health Avenue</p>
+              <p className="text-sm text-gray-500">Hyderabad, Telangana</p>
+            </div>
+          </div>
+
+          {/* Payment */}
+          <div className="flex items-start gap-3">
+            <CreditCard className="h-5 w-5 text-gray-500 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-gray-500">Payment</p>
+              <p className="text-sm font-medium text-amber-600">Pending</p>
             </div>
           </div>
         </div>
