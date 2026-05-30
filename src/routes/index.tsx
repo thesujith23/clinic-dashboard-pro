@@ -16,15 +16,6 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Welcome Message */}
-      <div className="border-b border-slate-200 pb-5">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-          {getGreeting()}, {username} 👋
-        </h1>
-        <p className="text-sm font-medium text-slate-500 mt-1">
-          Here's an overview of today's clinic activity.
-        </p>
-      </div>
 
       <div className="grid gap-8">
         <section className="space-y-4">
