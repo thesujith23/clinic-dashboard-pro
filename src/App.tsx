@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SidebarProvider, SidebarTrigger } from "@/componentss/ui/sidebar";
@@ -11,6 +11,7 @@ import DoctorsPage from './routes/doctors';
 import ScheduleDummyPage from './routes/schedule-dummy';
 import AppointmentsPage from './routes/appointments';
 import LoginPage from './routes/login';
+import { UserContext } from './context/user-context';
 
 const queryClient = new QueryClient();
 
@@ -88,18 +89,20 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <AppLayout username={username} onLogout={handleLogout}>
-          <Routes>
-            <Route path="/" element={<IndexPage />} />
-            <Route path="/call-logs" element={<CallLogsPage />} />
-            <Route path="/appointments" element={<AppointmentsPage />} />
-            <Route path="/doctors" element={<DoctorsPage />} />
-            <Route path="/schedule" element={<ScheduleDummyPage />} />
-            <Route path="*" element={<NotFoundComponent />} />
-          </Routes>
-        </AppLayout>
-      </Router>
+      <UserContext.Provider value={username}>
+        <Router>
+          <AppLayout username={username} onLogout={handleLogout}>
+            <Routes>
+              <Route path="/" element={<IndexPage />} />
+              <Route path="/call-logs" element={<CallLogsPage />} />
+              <Route path="/appointments" element={<AppointmentsPage />} />
+              <Route path="/doctors" element={<DoctorsPage />} />
+              <Route path="/schedule" element={<ScheduleDummyPage />} />
+              <Route path="*" element={<NotFoundComponent />} />
+            </Routes>
+          </AppLayout>
+        </Router>
+      </UserContext.Provider>
     </QueryClientProvider>
   );
 }

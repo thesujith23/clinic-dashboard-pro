@@ -2,14 +2,31 @@ import { DoctorCard, doctors } from "@/componentss/doctor-card";
 import { CallLogsTable } from "@/componentss/call-logs-table";
 import { StatsRow } from "@/componentss/stats-row";
 import { Stethoscope, Phone } from "lucide-react";
+import { useUser } from "@/context/user-context";
+
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
 
 export default function DashboardPage() {
+  const username = useUser();
+
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="grid gap-8">
-        {/* Stats above doctor cards */}
-        <StatsRow />
+      {/* Welcome Message */}
+      <div className="border-b border-slate-200 pb-5">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+          {getGreeting()}, {username} 👋
+        </h1>
+        <p className="text-sm font-medium text-slate-500 mt-1">
+          Here's an overview of today's clinic activity.
+        </p>
+      </div>
 
+      <div className="grid gap-8">
         <section className="space-y-4">
           <div className="flex items-center justify-between border-b pb-4">
             <div className="flex items-center gap-3">
@@ -29,6 +46,9 @@ export default function DashboardPage() {
             ))}
           </div>
         </section>
+
+        {/* Stats row */}
+        <StatsRow />
 
         <section className="space-y-4">
           <div className="flex items-center justify-between border-b pb-4">
