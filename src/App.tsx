@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SidebarProvider, SidebarTrigger } from "@/componentss/ui/sidebar";
@@ -9,6 +10,7 @@ import CallLogsPage from './routes/call-logs';
 import DoctorsPage from './routes/doctors';
 import ScheduleDummyPage from './routes/schedule-dummy';
 import AppointmentsPage from './routes/appointments';
+import LoginPage from './routes/login';
 
 const queryClient = new QueryClient();
 
@@ -34,7 +36,7 @@ function NotFoundComponent() {
   );
 }
 
-function AppLayout({ children }: { children: React.ReactNode }) {
+function AppLayout({ children, username, onLogout }: { children: React.ReactNode, username: string, onLogout: () => void }) {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
@@ -51,10 +53,13 @@ function AppLayout({ children }: { children: React.ReactNode }) {
                   <User className="h-5 w-5 text-primary" />
                 </div>
                 <div className="hidden md:flex flex-col">
-                  <span className="text-sm font-semibold text-slate-700 leading-none">Dr. Admin</span>
+                  <span className="text-sm font-semibold text-slate-700 leading-none">{username}</span>
                   <span className="text-xs text-slate-500 mt-1">Administrator</span>
                 </div>
               </div>
+              <button onClick={onLogout} className="text-xs font-medium text-slate-500 hover:text-slate-900 ml-2 border border-slate-200 px-3 py-1.5 rounded-full hover:bg-slate-50 transition-colors">
+                Log out
+              </button>
             </div>
           </header>
           <main className="flex-1 p-4 sm:p-6 lg:p-8">
@@ -67,10 +72,28 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 }
 
 function App() {
+  const [username, setUsername] = useState<string | null>(() => {
+    return localStorage.getItem('clinic_username');
+  });
+
+  const handleLogin = (name: string) => {
+    localStorage.setItem('clinic_username', name);
+    setUsername(name);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('clinic_username');
+    setUsername(null);
+  };
+
+  if (!username) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <AppLayout>
+        <AppLayout username={username} onLogout={handleLogout}>
           <Routes>
             <Route path="/" element={<IndexPage />} />
             <Route path="/call-logs" element={<CallLogsPage />} />
