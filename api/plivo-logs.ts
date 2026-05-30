@@ -57,8 +57,8 @@ export default async function handler(request: Request) {
 
     const transcriptsMap = new Map<string, string>();
     transcriptionsData.objects?.forEach((trans) => {
-      if (trans.recording_id && trans.transcription_text) {
-        transcriptsMap.set(trans.recording_id, trans.transcription_text);
+      if (trans.call_uuid && trans.transcription_text) {
+        transcriptsMap.set(trans.call_uuid, trans.transcription_text);
       }
     });
 
@@ -69,7 +69,7 @@ export default async function handler(request: Request) {
       let transcript = null;
       
       if (rec && rec.recording_id) {
-        transcript = transcriptsMap.get(rec.recording_id) || null;
+        transcript = transcriptsMap.get(log.call_uuid) || null;
         
         // Auto-trigger transcription if it doesn't exist yet
         if (!transcript) {
@@ -90,6 +90,7 @@ export default async function handler(request: Request) {
       return {
         ...log,
         recording_url: rec ? rec.recording_url : null,
+        recording_id: rec ? rec.recording_id : null,
         transcript: transcript,
         summary: summary
       };

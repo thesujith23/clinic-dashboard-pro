@@ -75,25 +75,9 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
     .slice(0, 2)
     .toUpperCase();
 
-  // Group the schedule map by time slot
-  const slotGroups: Record<string, string[]> = {};
-  if (doctor.scheduleMap) {
-    doctor.scheduleMap.forEach(item => {
-      if (!slotGroups[item.time]) slotGroups[item.time] = [];
-      slotGroups[item.time].push(item.day);
-    });
-  } else {
-    // Fallback if scheduleMap is missing
-    const fallbackTime = doctor.slots[0] || "No Slots";
-    slotGroups[fallbackTime] = doctor.days.map(d => dayShort[d] || d);
-  }
-
-  const groupedSlots = Object.entries(slotGroups);
-
   return (
-    <Card className="glass-card group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-card)]">
-      <div className={`h-1.5 w-full bg-gradient-to-r ${doctor.accent}`} />
-      <CardHeader className="flex flex-row items-center gap-3 pb-2">
+    <Card className="group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-md border-slate-200">
+      <CardHeader className="flex flex-row items-center gap-3 pb-2 pt-5">
         <Avatar className="h-12 w-12 ring-2 ring-primary/10">
           <AvatarFallback
             className={`bg-gradient-to-br ${doctor.accent} text-white font-semibold`}
@@ -108,32 +92,37 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <p className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">
-            Schedule
+          <p className="text-xs font-medium text-muted-foreground mb-2">
+            Available days
           </p>
-          <div className="space-y-2">
-            {groupedSlots.map(([time, daysArray]) => (
-              <div key={time} className="flex flex-col gap-2 rounded-xl bg-muted/50 p-3">
-                <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                  <Clock className="h-4 w-4 text-primary" />
-                  <span>{time}</span>
-                </div>
-                <div className="flex flex-wrap gap-1.5 pl-6">
-                  {daysArray.map((d) => (
-                    <Badge
-                      key={d}
-                      variant="secondary"
-                      className="bg-white border-slate-200 text-slate-600 font-medium shadow-sm"
-                    >
-                      {d}
-                    </Badge>
-                  ))}
-                </div>
+          <div className="flex flex-wrap gap-1.5">
+            {doctor.days.map((day) => (
+              <Badge
+                key={day}
+                variant="secondary"
+                className="bg-primary/5 text-primary hover:bg-primary/10"
+              >
+                {dayShort[day] || day}
+              </Badge>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-medium text-muted-foreground mb-2">
+            Time slots
+          </p>
+          <div className="space-y-1.5">
+            {doctor.slots.map((slot) => (
+              <div
+                key={slot}
+                className="flex items-center text-sm text-muted-foreground"
+              >
+                <Clock className="mr-2 h-3.5 w-3.5" />
+                {slot}
               </div>
             ))}
           </div>
         </div>
-        
         <div className="pt-2">
           <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
             <Link to="/schedule" state={{ doctorName: doctor.name }}>

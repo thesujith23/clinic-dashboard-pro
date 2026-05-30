@@ -64,8 +64,8 @@ export function CallLogsTable() {
 
   return (
     <>
-    <Card className="glass-card shadow-lg shadow-blue-900/5 border-white/60 bg-white/60 backdrop-blur-xl overflow-hidden hover:shadow-xl transition-all duration-300">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-white/60 bg-white/40">
+    <Card className="shadow-sm border-slate-200 overflow-hidden">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 bg-slate-50/50">
         <div className="flex items-center gap-3">
           <History className="h-5 w-5 text-slate-700" />
           <h2 className="text-lg font-bold text-slate-800 tracking-tight">Recent Calls</h2>

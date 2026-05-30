@@ -3,7 +3,7 @@ import {
   Sheet,
   SheetContent,
 } from "@/componentss/ui/sheet";
-import { X, Play, Pause, Phone, Calendar, Clock, RotateCcw, ChevronDown } from "lucide-react";
+import { X, Play, Pause, Phone, Calendar, Clock, RotateCcw, ChevronDown, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 
 export interface CallLog {
@@ -15,7 +15,9 @@ export interface CallLog {
   call_direction?: string;
   call_duration?: string | number;
   recording_url?: string | null;
+  recording_id?: string | null;
   summary?: string | null;
+  transcript?: string | null;
   actionTrigger?: string;
 }
 
@@ -56,6 +58,38 @@ export function CallLogSidePanel({ isOpen, onClose, log }: CallLogSidePanelProps
         }
     } else {
         setAudioDuration(0);
+    }
+  }, [log?.call_uuid, isOpen]);
+
+  const [liveTranscript, setLiveTranscript] = useState<string | null>(null);
+  const [transcriptionStatus, setTranscriptionStatus] = useState<string>("none");
+
+  // Fetch or trigger transcription when opened
+  useEffect(() => {
+    if (!isOpen || !log) return;
+    
+    setLiveTranscript(log.transcript || null);
+    setTranscriptionStatus("none");
+
+    if (log.recording_id && !log.transcript) {
+      const fetchTranscription = async () => {
+        setTranscriptionStatus("loading");
+        try {
+          const res = await fetch(`/api/plivo-transcribe?recording_id=${log.recording_id}&call_uuid=${log.call_uuid}`);
+          const data = await res.json();
+          if (data.status === "completed" && data.text) {
+            setLiveTranscript(data.text);
+            setTranscriptionStatus("completed");
+          } else if (data.status === "queued") {
+            setTranscriptionStatus("queued");
+          } else {
+            setTranscriptionStatus("error");
+          }
+        } catch (e) {
+          setTranscriptionStatus("error");
+        }
+      };
+      fetchTranscription();
     }
   }, [log?.call_uuid, isOpen]);
 
@@ -124,8 +158,76 @@ export function CallLogSidePanel({ isOpen, onClose, log }: CallLogSidePanelProps
     ? (typeof log.call_duration === "number" ? formatAudioTime(log.call_duration) : log.call_duration)
     : "0:00";
 
-  // Dummy summary as requested
-  const summaryText = log.summary || "Patient called to inquire about scheduling a follow-up appointment for next week. They also had questions regarding their recent test results and wanted to confirm if the doctor had reviewed them yet.";
+  let summaryContent = null;
+
+  const renderChat = (text: string) => {
+    const lines = text.split('\n').filter(l => l.trim() !== '');
+    return (
+      <div className="mt-3 rounded-lg border border-gray-200 bg-slate-50/50 p-4 max-h-[300px] overflow-y-auto flex flex-col gap-4">
+        {lines.map((line, i) => {
+          const match = line.match(/^(Speaker \d+):\s*(.*)/i);
+          let speaker = "Patient";
+          let content = line;
+          let isAgent = false;
+
+          if (match) {
+            const rawSpeaker = match[1].toLowerCase();
+            content = match[2];
+            if (rawSpeaker === "speaker 0") {
+              speaker = "AI Agent";
+              isAgent = true;
+            } else {
+              speaker = "Patient";
+            }
+          } else {
+            // Fallback if no colon is found, we guess based on previous or just assume Patient
+            if (line.toLowerCase().startsWith("speaker 0")) {
+              speaker = "AI Agent";
+              isAgent = true;
+              content = line.replace(/speaker 0/i, "").trim();
+            }
+          }
+
+          return (
+            <div key={i} className={`flex flex-col max-w-[90%] ${isAgent ? 'self-start' : 'self-end'}`}>
+              <span className={`text-[10px] font-bold mb-1 uppercase tracking-wide ${isAgent ? 'text-blue-600' : 'text-emerald-600 self-end'}`}>
+                {speaker}
+              </span>
+              <div className={`px-3 py-2.5 rounded-2xl text-[13px] leading-relaxed shadow-sm ${isAgent ? 'bg-white border border-slate-200 text-slate-800 rounded-tl-sm' : 'bg-emerald-100 border border-emerald-200 text-emerald-900 rounded-tr-sm'}`}>
+                {content}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  if (liveTranscript) {
+    summaryContent = renderChat(liveTranscript);
+  } else if (transcriptionStatus === "loading") {
+    summaryContent = (
+      <div className="mt-3 rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-500 flex items-center justify-center">
+        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+        Fetching transcription...
+      </div>
+    );
+  } else if (transcriptionStatus === "queued") {
+    summaryContent = (
+      <div className="mt-3 rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-500 flex flex-col items-center justify-center text-center">
+        <Loader2 className="h-5 w-5 animate-spin mb-2 text-blue-500" />
+        Transcription is currently queued by Plivo.<br/>It may take a few moments to complete.
+      </div>
+    );
+  } else if (log.transcript) {
+    summaryContent = renderChat(log.transcript);
+  } else {
+    summaryContent = (
+      <div className="mt-3 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-500 text-center italic">
+        No transcript available for this call.
+      </div>
+    );
+  }
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -257,7 +359,7 @@ export function CallLogSidePanel({ isOpen, onClose, log }: CallLogSidePanelProps
               onClick={() => setSummaryOpen((prev) => !prev)}
               className="flex w-full items-center justify-between text-left hover:opacity-80 transition-opacity"
             >
-              <h3 className="text-sm font-semibold text-gray-700">Call Summary</h3>
+              <h3 className="text-sm font-semibold text-gray-700">Transcript</h3>
               <ChevronDown
                 className={
                   "text-gray-500 " + 
@@ -265,11 +367,7 @@ export function CallLogSidePanel({ isOpen, onClose, log }: CallLogSidePanelProps
                 }
               />
             </button>
-            {summaryOpen && (
-              <div className="mt-3 rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700 leading-relaxed">
-                {summaryText}
-              </div>
-            )}
+            {summaryOpen && summaryContent}
           </div>
         </div>
       </SheetContent>

@@ -6,10 +6,10 @@ import { Label } from "@/componentss/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/componentss/ui/select"
 import { Switch } from "@/componentss/ui/switch"
 import { Badge } from "@/componentss/ui/badge"
-import { Clock, Calendar as CalendarIcon, User, Save, MapPin, Loader2, X, ChevronRight, ChevronLeft } from "lucide-react"
+import { Clock, Calendar as CalendarIcon, User, Save, MapPin, Loader2, X, ChevronRight, ChevronLeft, ArrowLeft } from "lucide-react"
 import { doctors } from "@/componentss/doctor-card"
 import { toast } from "sonner"
-import { useLocation } from "react-router-dom"
+import { useLocation, Link } from "react-router-dom"
 
 const defaultSchedule = [
   { day: "Sun", isOpen: false, startTime: "09:00", endTime: "17:00" },
@@ -188,9 +188,16 @@ export default function ScheduleDummyPage() {
 
       <div className="relative flex flex-col min-h-0 w-full max-w-[1400px] mx-auto p-4 md:px-8 py-6 animate-in fade-in slide-in-from-bottom-4 duration-500 z-10">
         <div className="flex items-center justify-between mb-8 shrink-0 bg-white/40 backdrop-blur-xl border border-white/60 p-6 rounded-3xl shadow-sm">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">Doctor Schedule Settings</h1>
-            <p className="text-sm text-slate-500 mt-1 font-medium">Configure availabilities, time slots, and blocked dates in real-time.</p>
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="icon" asChild className="h-10 w-10 shrink-0 rounded-full bg-white/60 border-slate-200 hover:bg-white">
+              <Link to="/">
+                <ArrowLeft className="h-5 w-5 text-slate-700" />
+              </Link>
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">Doctor Schedule Settings</h1>
+              <p className="text-sm text-slate-500 mt-1 font-medium">Configure availabilities, time slots, and blocked dates in real-time.</p>
+            </div>
           </div>
           <div className="flex items-center gap-3 bg-white/60 backdrop-blur-md px-4 py-2.5 rounded-full border border-slate-200/60 shadow-sm transition-all duration-300">
             {isSaving ? (
