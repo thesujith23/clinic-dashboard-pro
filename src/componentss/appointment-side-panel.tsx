@@ -1,7 +1,8 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/componentss/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/componentss/ui/sheet";
 import { Badge } from "@/componentss/ui/badge";
 import { Button } from "@/componentss/ui/button";
-import { Calendar, Clock, User, Stethoscope, Mail, Phone } from "lucide-react";
+import { CalendarDays, Clock, User, Stethoscope, Mail, Phone, X, Building } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export type Appointment = {
   id: number;
@@ -23,86 +24,81 @@ export function AppointmentSidePanel({ isOpen, onClose, appointment }: Appointme
   if (!appointment) return null;
 
   return (
-    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent className="w-full sm:max-w-md p-0 overflow-y-auto bg-slate-50 border-l border-slate-200">
-        <div className="p-6 bg-white border-b border-slate-100">
-          <SheetHeader className="text-left space-y-4">
-            <div className="flex items-center justify-between">
-              <SheetTitle className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
-                Appointment Details
-              </SheetTitle>
-              {appointment.status === "confirmed" && <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-0">Confirmed</Badge>}
-              {appointment.status === "pending" && <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-200 border-0">Pending</Badge>}
-              {appointment.status === "cancelled" && <Badge className="bg-red-100 text-red-700 hover:bg-red-200 border-0">Cancelled</Badge>}
-            </div>
-            <SheetDescription className="text-slate-500 font-medium">
-              Information about the scheduled visit.
-            </SheetDescription>
-          </SheetHeader>
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto p-0 [&>[data-sheet-overlay]]:bg-black/30">
+        <VisuallyHidden>
+          <SheetTitle>Appointment Details</SheetTitle>
+          <SheetDescription>
+            View and edit appointment information including patient details, date, time, and status
+          </SheetDescription>
+        </VisuallyHidden>
+        
+        {/* Header */}
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4">
+          <h2 className="text-xl font-semibold">Appointment Details</h2>
+          <button
+            onClick={onClose}
+            className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </button>
         </div>
 
-        <div className="p-6 space-y-6">
-          <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-            <div className="h-12 w-12 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
-              <User className="h-6 w-6" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-bold text-slate-900">{appointment.patient}</span>
-              <span className="text-sm font-medium text-slate-500">New Patient</span>
-            </div>
-          </div>
-
-          <div className="space-y-4 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Visit Info</h3>
-            
-            <div className="flex items-start gap-3">
-              <Stethoscope className="h-4.5 w-4.5 text-slate-400 mt-0.5" />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-slate-500">Provider</span>
-                <span className="font-semibold text-slate-800">{appointment.doctor}</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <Calendar className="h-4.5 w-4.5 text-slate-400 mt-0.5" />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-slate-500">Date</span>
-                <span className="font-semibold text-slate-800">
-                  {new Date(appointment.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <Clock className="h-4.5 w-4.5 text-slate-400 mt-0.5" />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-slate-500">Time Slot</span>
-                <span className="font-semibold text-slate-800">{appointment.slot}</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <Badge variant="outline" className="text-xs text-indigo-600 border-indigo-200 bg-indigo-50 mt-2">
-                {appointment.type}
-              </Badge>
+        {/* Content */}
+        <div className="px-6 py-6 space-y-6">
+          {/* Appointment Date and Time */}
+          <div className="flex items-start gap-3">
+            <CalendarDays className="h-5 w-5 text-gray-500 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-gray-500">Appointment Date and Time</p>
+              <p className="text-sm font-medium text-gray-900">
+                {new Date(appointment.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' })} - {appointment.slot}
+              </p>
             </div>
           </div>
 
-          <div className="flex gap-3">
-            <Button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">
-              <Phone className="mr-2 h-4 w-4" />
-              Call
-            </Button>
-            <Button variant="outline" className="flex-1 bg-white border-slate-200 shadow-sm text-slate-700 hover:bg-slate-50">
-              <Mail className="mr-2 h-4 w-4" />
-              Message
-            </Button>
+          {/* Patient Name */}
+          <div className="flex items-start gap-3">
+            <User className="h-5 w-5 text-gray-500 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-gray-500">Patient Name</p>
+              <p className="text-sm font-medium text-blue-600">
+                {appointment.patient}
+              </p>
+            </div>
           </div>
-          
-          <div className="pt-4 flex justify-center">
-             <Button variant="ghost" className="text-red-500 hover:bg-red-50 hover:text-red-600 text-sm font-semibold w-full">
-               Cancel Appointment
-             </Button>
+
+          {/* Visit Type */}
+          <div className="flex items-start gap-3">
+            <Building className="h-5 w-5 text-gray-500 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-gray-500">Visit Type</p>
+              <p className="text-sm font-medium text-gray-900">{appointment.type}</p>
+            </div>
+          </div>
+
+          {/* Assigned Provider */}
+          <div className="flex items-start gap-3">
+            <Stethoscope className="h-5 w-5 text-gray-500 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-gray-500">Assigned Provider</p>
+              <p className="text-sm font-medium text-gray-900">
+                {appointment.doctor}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Status Section - Fixed at bottom */}
+        <div className="sticky bottom-0 bg-white border-t px-6 py-4">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-gray-700">Status:</span>
+            <div className="flex items-center gap-2">
+              {appointment.status === "confirmed" && <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-0">Confirmed</Badge>}
+              {appointment.status === "pending" && <Badge variant="secondary" className="bg-amber-100 text-amber-700 hover:bg-amber-200 border-0">Pending</Badge>}
+              {appointment.status === "cancelled" && <Badge variant="destructive" className="bg-red-100 text-red-700 hover:bg-red-200 border-0 shadow-none">Cancelled</Badge>}
+            </div>
           </div>
         </div>
       </SheetContent>
