@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Stethoscope, PhoneCall, Sparkles } from "lucide-react";
+import { LayoutDashboard, Stethoscope, PhoneCall, CalendarDays } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -14,7 +14,7 @@ import {
 
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Appointments", url: "/appointments", icon: Sparkles },
+  { title: "Appointments", url: "/appointments", icon: CalendarDays },
   { title: "Call Logs", url: "/call-logs", icon: PhoneCall },
 ];
 

@@ -2,7 +2,8 @@ import { Card } from "@/componentss/ui/card";
 import { Badge } from "@/componentss/ui/badge";
 import { Calendar, Clock, User, CalendarDays } from "lucide-react";
 import { ScrollArea } from "@/componentss/ui/scroll-area";
-import React from "react";
+import React, { useState } from "react";
+import { AppointmentSidePanel, Appointment } from "./appointment-side-panel";
 
 const DEMO_APPOINTMENTS = [
   { id: 1, patient: "John Doe", doctor: "Dr. Sweekar", date: "2026-06-01", slot: "10:30 AM", type: "Checkup", status: "confirmed" },
@@ -13,7 +14,10 @@ const DEMO_APPOINTMENTS = [
 ];
 
 export function AppointmentsTable() {
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+
   return (
+    <>
     <Card className="shadow-sm border-slate-200 overflow-hidden glass-card">
       <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200/50 bg-slate-50/50">
         <div className="flex items-center gap-3">
@@ -30,7 +34,8 @@ export function AppointmentsTable() {
           {DEMO_APPOINTMENTS.map((apt) => (
             <div 
               key={apt.id} 
-              className="flex flex-col sm:flex-row sm:items-center justify-between p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors gap-4"
+              className="flex flex-col sm:flex-row sm:items-center justify-between p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors gap-4 cursor-pointer"
+              onClick={() => setSelectedAppointment(apt)}
             >
               <div className="flex items-start gap-4">
                 <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full shadow-sm border bg-indigo-50 text-indigo-600 border-indigo-100">
@@ -63,5 +68,11 @@ export function AppointmentsTable() {
         </div>
       </ScrollArea>
     </Card>
+    <AppointmentSidePanel 
+      isOpen={selectedAppointment !== null}
+      onClose={() => setSelectedAppointment(null)}
+      appointment={selectedAppointment}
+    />
+    </>
   );
 }
