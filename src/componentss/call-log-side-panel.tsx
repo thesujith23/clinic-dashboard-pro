@@ -15,7 +15,7 @@ export interface CallLog {
   call_direction?: string;
   call_duration?: string | number;
   recording_url?: string | null;
-  summary?: string;
+  summary?: string | null;
   actionTrigger?: string;
 }
 
@@ -124,7 +124,7 @@ export function CallLogSidePanel({ isOpen, onClose, log }: CallLogSidePanelProps
     ? (typeof log.call_duration === "number" ? formatAudioTime(log.call_duration) : log.call_duration)
     : "0:00";
 
-  // Mock summary if none exists
+  // Dummy summary as requested
   const summaryText = log.summary || "Patient called to inquire about scheduling a follow-up appointment for next week. They also had questions regarding their recent test results and wanted to confirm if the doctor had reviewed them yet.";
 
   return (
