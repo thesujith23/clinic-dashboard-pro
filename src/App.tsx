@@ -72,17 +72,13 @@ function AppLayout({ children, username, onLogout }: { children: React.ReactNode
 }
 
 function App() {
-  const [username, setUsername] = useState<string | null>(() => {
-    return localStorage.getItem('clinic_username');
-  });
+  const [username, setUsername] = useState<string | null>(null);
 
   const handleLogin = (name: string) => {
-    localStorage.setItem('clinic_username', name);
     setUsername(name);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('clinic_username');
     setUsername(null);
   };
 
