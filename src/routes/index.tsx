@@ -1,13 +1,11 @@
-import { DashboardHeader } from "@/componentss/dashboard-header";
 import { DoctorCard, doctors } from "@/componentss/doctor-card";
 import { CallLogsTable } from "@/componentss/call-logs-table";
+import { StatsRow } from "@/componentss/stats-row";
 import { Stethoscope, Phone } from "lucide-react";
 
 export default function DashboardPage() {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <DashboardHeader />
-
       <div className="grid gap-8">
         <section className="space-y-4">
           <div className="flex items-center justify-between border-b pb-4">
@@ -28,7 +26,10 @@ export default function DashboardPage() {
             ))}
           </div>
         </section>
-        
+
+        {/* Stats below doctor cards */}
+        <StatsRow />
+
         <section className="space-y-4">
           <div className="flex items-center justify-between border-b pb-4">
             <div className="flex items-center gap-3">
