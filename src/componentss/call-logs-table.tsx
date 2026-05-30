@@ -65,21 +65,21 @@ export function CallLogsTable() {
   return (
     <>
     <Card className="shadow-sm border-slate-200 overflow-hidden">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 bg-slate-50/50">
-        <div className="flex items-center gap-3">
-          <History className="h-5 w-5 text-slate-700" />
-          <h2 className="text-lg font-bold text-slate-800 tracking-tight">Recent Calls</h2>
-          <Badge variant="secondary" className="bg-slate-100 text-slate-600 hover:bg-slate-200 border-0 font-bold text-[10px] uppercase px-2 py-0.5 ml-1 tracking-wider">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-white">
+        <div className="flex items-center gap-2">
+          <History className="h-4 w-4 text-slate-500" />
+          <h2 className="text-base font-bold text-slate-800 tracking-tight">Recent Calls</h2>
+          <Badge variant="secondary" className="bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-100 font-bold text-[9px] uppercase px-1.5 py-0 ml-1 tracking-wider">
             Live
           </Badge>
           {isDemoMode && (
-            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 font-medium ml-2">
-              Demo Mode
+            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 font-medium ml-2 text-[10px] py-0 px-1.5">
+              Demo
             </Badge>
           )}
         </div>
-        <Button variant="ghost" size="sm" onClick={() => refetch()} className="text-slate-600 hover:text-slate-900 font-medium">
-          <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+        <Button variant="ghost" size="sm" onClick={() => refetch()} className="text-slate-500 hover:text-slate-800 font-medium h-8 text-xs px-2">
+          <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${isLoading ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
       </div>
@@ -108,17 +108,17 @@ export function CallLogsTable() {
               return (
                 <div 
                   key={(log.call_uuid as string) ?? i} 
-                  className="flex flex-col sm:flex-row sm:items-center justify-between p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors gap-4 cursor-pointer"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between px-5 py-4 border-b border-slate-100 last:border-0 hover:bg-slate-50/80 transition-colors gap-4 cursor-pointer"
                   onClick={() => setSelectedLog(log as CallLog)}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full shadow-sm border ${isIncoming ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-blue-50 text-blue-600 border-blue-100'}`}>
-                      {isIncoming ? <PhoneIncoming className="h-5 w-5" /> : <PhoneOutgoing className="h-5 w-5" />}
+                  <div className="flex items-start gap-3">
+                    <div className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full shadow-sm border ${isIncoming ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-blue-50 text-blue-600 border-blue-100'}`}>
+                      {isIncoming ? <PhoneIncoming className="h-4 w-4" /> : <PhoneOutgoing className="h-4 w-4" />}
                     </div>
 
-                    <div className="flex flex-col gap-1.5">
-                      <span className="font-semibold text-slate-900">{fromNumber}</span>
-                      <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">
+                    <div className="flex flex-col gap-1">
+                      <span className="font-semibold text-sm text-slate-800">{fromNumber}</span>
+                      <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
                         <span>{isIncoming ? "Incoming" : "Outgoing"}</span>
                         <span className="text-slate-300">•</span>
                         <span>{timeStr ? formatTimeAgo(timeStr) : "Unknown time"}</span>
@@ -126,21 +126,21 @@ export function CallLogsTable() {
                         <span>{duration}</span>
                       </div>
 
-                      <div className="mt-1 flex items-center gap-3 rounded-lg bg-slate-100/70 p-1.5 border border-slate-200 w-fit">
-                        <Badge variant="secondary" className="text-[10px] uppercase font-bold text-slate-500 bg-slate-200/80 hover:bg-slate-300/50">Rec</Badge>
+                      <div className="mt-1 flex items-center gap-2 rounded-md bg-white p-1 border border-slate-200 w-fit">
+                        <Badge variant="secondary" className="text-[9px] uppercase font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 py-0">Rec</Badge>
                         {recordUrl ? (
                           <div onClick={(e) => e.stopPropagation()}>
-                            <audio controls src={String(recordUrl)} className="h-7 w-[200px] sm:w-[260px] outline-none" />
+                            <audio controls src={String(recordUrl)} className="h-6 w-[180px] sm:w-[220px] outline-none" />
                           </div>
                         ) : (
-                          <span className="text-xs text-slate-400 px-2 font-medium">No recording available</span>
+                          <span className="text-[10px] text-slate-400 px-1 font-medium">No recording</span>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  <Button variant="outline" className="shrink-0 flex items-center gap-2 font-semibold shadow-sm w-full sm:w-auto mt-2 sm:mt-0" onClick={(e) => { e.stopPropagation(); /* Call back logic */ }}>
-                    <Phone className="h-4 w-4" />
+                  <Button variant="outline" size="sm" className="shrink-0 flex items-center gap-1.5 font-semibold shadow-sm w-full sm:w-auto mt-2 sm:mt-0 h-8 text-xs border-slate-200" onClick={(e) => { e.stopPropagation(); /* Call back logic */ }}>
+                    <Phone className="h-3 w-3 text-slate-500" />
                     Call back
                   </Button>
                 </div>
