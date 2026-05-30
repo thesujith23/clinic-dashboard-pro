@@ -3,7 +3,7 @@ import { Badge } from "@/componentss/ui/badge";
 import { Avatar, AvatarFallback } from "@/componentss/ui/avatar";
 import { Button } from "@/componentss/ui/button";
 import { Link } from "react-router-dom";
-import { Clock, Calendar } from "lucide-react";
+import { Clock, Calendar, Edit } from "lucide-react";
 
 export type Doctor = {
   name: string;
@@ -85,10 +85,15 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
             {initials}
           </AvatarFallback>
         </Avatar>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <h3 className="font-semibold leading-tight truncate">{doctor.name}</h3>
           <p className="text-xs text-muted-foreground">{doctor.specialty}</p>
         </div>
+        <Link to="/schedule" state={{ doctorName: doctor.name }}>
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50">
+            <Edit className="h-4 w-4" />
+          </Button>
+        </Link>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
