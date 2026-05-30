@@ -8,6 +8,7 @@ import IndexPage from './routes/index';
 import CallLogsPage from './routes/call-logs';
 import DoctorsPage from './routes/doctors';
 import ScheduleDummyPage from './routes/schedule-dummy';
+import AppointmentsPage from './routes/appointments';
 
 const queryClient = new QueryClient();
 
@@ -73,6 +74,7 @@ function App() {
           <Routes>
             <Route path="/" element={<IndexPage />} />
             <Route path="/call-logs" element={<CallLogsPage />} />
+            <Route path="/appointments" element={<AppointmentsPage />} />
             <Route path="/doctors" element={<DoctorsPage />} />
             <Route path="/schedule" element={<ScheduleDummyPage />} />
             <Route path="*" element={<NotFoundComponent />} />

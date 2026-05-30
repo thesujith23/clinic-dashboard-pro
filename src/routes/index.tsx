@@ -1,29 +1,14 @@
 import { DashboardHeader } from "@/componentss/dashboard-header";
 import { DoctorCard, doctors } from "@/componentss/doctor-card";
 import { CallLogsTable } from "@/componentss/call-logs-table";
-import { AppointmentsTable } from "@/componentss/appointments-table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/componentss/ui/tabs";
-import { Stethoscope, Phone, CalendarDays, Activity } from "lucide-react";
+import { Stethoscope, Phone } from "lucide-react";
 
 export default function DashboardPage() {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <DashboardHeader />
 
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="mb-8 p-1.5 bg-slate-100/80 rounded-xl">
-          <TabsTrigger value="overview" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 py-2 flex items-center gap-2">
-            <Activity className="h-4 w-4" />
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="appointments" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 py-2 flex items-center gap-2">
-            <CalendarDays className="h-4 w-4" />
-            Appointments
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <div className="grid gap-8">
+      <div className="grid gap-8">
         <section className="space-y-4">
           <div className="flex items-center justify-between border-b pb-4">
             <div className="flex items-center gap-3">
@@ -65,15 +50,9 @@ export default function DashboardPage() {
               </span>
             </div>
           </div>
-            <CallLogsTable />
-          </section>
-        </div>
-        </TabsContent>
-
-        <TabsContent value="appointments" className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <AppointmentsTable />
-        </TabsContent>
-      </Tabs>
+          <CallLogsTable />
+        </section>
+      </div>
     </div>
   );
 }
