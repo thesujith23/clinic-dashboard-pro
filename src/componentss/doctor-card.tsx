@@ -123,14 +123,6 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
             ))}
           </div>
         </div>
-        <div className="pt-2">
-          <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
-            <Link to="/schedule" state={{ doctorName: doctor.name }}>
-              <Calendar className="mr-2 h-4 w-4" />
-              Manage Schedule
-            </Link>
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
