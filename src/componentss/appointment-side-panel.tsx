@@ -82,7 +82,7 @@ export function AppointmentSidePanel({ isOpen, onClose, appointment }: Appointme
           <div className="flex items-start gap-3">
             <Stethoscope className="h-5 w-5 text-gray-500 mt-0.5" />
             <div className="space-y-1">
-              <p className="text-sm text-gray-500">Assigned Provider</p>
+              <p className="text-sm text-gray-500">Doctor</p>
               <p className="text-sm font-medium text-gray-900">
                 {appointment.doctor}
               </p>
