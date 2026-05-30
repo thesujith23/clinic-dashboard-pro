@@ -5,6 +5,8 @@ import { Button } from "@/componentss/ui/button";
 import { PhoneIncoming, PhoneOutgoing, Phone, RefreshCw, Loader2, History } from "lucide-react";
 import { ScrollArea } from "@/componentss/ui/scroll-area";
 import { formatDistanceToNow } from "date-fns";
+import React, { useState } from "react";
+import { CallLogSidePanel, CallLog } from "./call-log-side-panel";
 
 const DEMO_LOGS: any[] = [
   { call_uuid: "demo-1", answer_time: new Date(Date.now() - 25 * 60000).toISOString(), from_number: "917892251871", call_direction: "inbound", call_duration: "03:26", recording_url: "https://plivo.com/recording/1.mp3" },
@@ -51,9 +53,19 @@ export function CallLogsTable() {
   const isDemoMode = isError || !!data?.error || logs.length === 0;
   const displayLogs = isDemoMode ? DEMO_LOGS : logs;
 
+  const filteredLogs = displayLogs.filter(log => {
+    const targetNumber = "918031336259";
+    const fromStr = String(log.from_number || log.from || "").replace(/\D/g, "");
+    const toStr = String(log.to_number || log.to || "").replace(/\D/g, "");
+    return fromStr.includes(targetNumber) || toStr.includes(targetNumber);
+  });
+
+  const [selectedLog, setSelectedLog] = useState<CallLog | null>(null);
+
   return (
-    <Card className="bg-white border-slate-200 overflow-hidden shadow-sm">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+    <>
+    <Card className="glass-card shadow-lg shadow-blue-900/5 border-white/60 bg-white/60 backdrop-blur-xl overflow-hidden hover:shadow-xl transition-all duration-300">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-white/60 bg-white/40">
         <div className="flex items-center gap-3">
           <History className="h-5 w-5 text-slate-700" />
           <h2 className="text-lg font-bold text-slate-800 tracking-tight">Recent Calls</h2>
@@ -77,14 +89,14 @@ export function CallLogsTable() {
           <Loader2 className="h-5 w-5 animate-spin mr-2" />
           Loading recent calls...
         </div>
-      ) : displayLogs.length === 0 ? (
+      ) : filteredLogs.length === 0 ? (
         <div className="py-24 text-center text-sm text-slate-500">
-          No call logs found.
+          No call logs found for +91 80 3133 6259.
         </div>
       ) : (
         <ScrollArea className="w-full">
           <div className="max-h-[700px] flex flex-col">
-            {displayLogs.map((log, i) => {
+            {filteredLogs.map((log, i) => {
               // Handle fallback mapping since API sometimes returns `from` instead of `from_number`
               const fromNumber = log.from_number || log.from;
               const direction = String(log.call_direction || "").toLowerCase();
@@ -94,7 +106,11 @@ export function CallLogsTable() {
               const recordUrl = log.recording_url;
 
               return (
-                <div key={(log.call_uuid as string) ?? i} className="flex flex-col sm:flex-row sm:items-center justify-between p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors gap-4">
+                <div 
+                  key={(log.call_uuid as string) ?? i} 
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors gap-4 cursor-pointer"
+                  onClick={() => setSelectedLog(log as CallLog)}
+                >
                   <div className="flex items-start gap-4">
                     <div className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full shadow-sm border ${isIncoming ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-blue-50 text-blue-600 border-blue-100'}`}>
                       {isIncoming ? <PhoneIncoming className="h-5 w-5" /> : <PhoneOutgoing className="h-5 w-5" />}
@@ -113,7 +129,9 @@ export function CallLogsTable() {
                       <div className="mt-1 flex items-center gap-3 rounded-lg bg-slate-100/70 p-1.5 border border-slate-200 w-fit">
                         <Badge variant="secondary" className="text-[10px] uppercase font-bold text-slate-500 bg-slate-200/80 hover:bg-slate-300/50">Rec</Badge>
                         {recordUrl ? (
-                          <audio controls src={String(recordUrl)} className="h-7 w-[200px] sm:w-[260px] outline-none" />
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <audio controls src={String(recordUrl)} className="h-7 w-[200px] sm:w-[260px] outline-none" />
+                          </div>
                         ) : (
                           <span className="text-xs text-slate-400 px-2 font-medium">No recording available</span>
                         )}
@@ -121,7 +139,7 @@ export function CallLogsTable() {
                     </div>
                   </div>
 
-                  <Button variant="outline" className="shrink-0 flex items-center gap-2 font-semibold shadow-sm w-full sm:w-auto mt-2 sm:mt-0">
+                  <Button variant="outline" className="shrink-0 flex items-center gap-2 font-semibold shadow-sm w-full sm:w-auto mt-2 sm:mt-0" onClick={(e) => { e.stopPropagation(); /* Call back logic */ }}>
                     <Phone className="h-4 w-4" />
                     Call back
                   </Button>
@@ -132,5 +150,12 @@ export function CallLogsTable() {
         </ScrollArea>
       )}
     </Card>
+    
+    <CallLogSidePanel 
+      isOpen={selectedLog !== null}
+      onClose={() => setSelectedLog(null)}
+      log={selectedLog}
+    />
+    </>
   );
 }
