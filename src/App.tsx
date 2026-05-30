@@ -81,7 +81,8 @@ function App() {
   const [username, setUsername] = useState<string | null>(null);
 
   const handleLogin = (name: string) => {
-    setUsername(name);
+    const formattedName = name.startsWith("Dr.") ? name : `Dr. ${name}`;
+    setUsername(formattedName);
   };
 
   const handleLogout = () => {
