@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SidebarProvider, SidebarTrigger } from "@/componentss/ui/sidebar";
 import { AppSidebar } from "@/componentss/app-sidebar";
-import { User } from "lucide-react";
+import { User, Phone } from "lucide-react";
 
 import IndexPage from './routes/index';
 import CallLogsPage from './routes/call-logs';
@@ -48,6 +48,11 @@ function AppLayout({ children, username, onLogout }: { children: React.ReactNode
               <SidebarTrigger className="text-slate-500 hover:text-slate-900" />
             </div>
             <div className="flex items-center gap-4">
+              <div className="h-5 w-px bg-slate-200 mx-1 hidden sm:block"></div>
+              <div className="hidden sm:flex items-center gap-1.5 text-slate-500">
+                <Phone className="h-3.5 w-3.5 text-slate-400" />
+                <span className="text-xs font-medium text-slate-600">+91 80 3133 6259</span>
+              </div>
               <div className="h-5 w-px bg-slate-200 mx-1 hidden sm:block"></div>
               <div className="flex items-center gap-3 cursor-pointer p-1 pr-2 rounded-full hover:bg-slate-50 transition-colors">
                 <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 overflow-hidden">
