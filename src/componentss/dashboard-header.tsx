@@ -1,14 +1,6 @@
-import { useEffect, useState } from "react";
 import { Stethoscope } from "lucide-react";
 
 export function DashboardHeader() {
-  const [now, setNow] = useState<Date | null>(null);
-
-  useEffect(() => {
-    setNow(new Date());
-    const t = setInterval(() => setNow(new Date()), 1000 * 30);
-    return () => clearInterval(t);
-  }, []);
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-5">
