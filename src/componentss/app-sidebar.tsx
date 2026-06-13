@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Stethoscope, PhoneCall, CalendarDays, Calendar } from "lucide-react";
+import { LayoutDashboard, Stethoscope, PhoneCall, CalendarDays, Calendar, ShoppingBag } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,6 +17,7 @@ const items = [
   { title: "Schedule", url: "/schedule", icon: Calendar },
   { title: "Appointments", url: "/appointments", icon: CalendarDays },
   { title: "Call Logs", url: "/call-logs", icon: PhoneCall },
+  { title: "Shop", url: "/shop", icon: ShoppingBag },
 ];
 
 export function AppSidebar() {

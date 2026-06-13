@@ -11,7 +11,9 @@ import DoctorsPage from './routes/doctors';
 import ScheduleDummyPage from './routes/schedule-dummy';
 import AppointmentsPage from './routes/appointments';
 import LoginPage from './routes/login';
+import ShopPage from './routes/shop';
 import { UserContext } from './context/user-context';
+import { Toaster } from './componentss/ui/sonner';
 
 const queryClient = new QueryClient();
 
@@ -104,10 +106,12 @@ function App() {
               <Route path="/appointments" element={<AppointmentsPage />} />
               <Route path="/doctors" element={<DoctorsPage />} />
               <Route path="/schedule" element={<ScheduleDummyPage />} />
+              <Route path="/shop" element={<ShopPage />} />
               <Route path="*" element={<NotFoundComponent />} />
             </Routes>
           </AppLayout>
         </Router>
+        <Toaster />
       </UserContext.Provider>
     </QueryClientProvider>
   );
