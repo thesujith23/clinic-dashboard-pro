@@ -53,7 +53,7 @@ function AppLayout({ children, username, onLogout }: { children: React.ReactNode
               <div className="h-5 w-px bg-slate-200 mx-1 hidden sm:block"></div>
               <div className="hidden sm:flex items-center gap-1.5 text-slate-500">
                 <Phone className="h-3.5 w-3.5 text-slate-400" />
-                <span className="text-xs font-medium text-slate-600">+91 80 3133 6259</span>
+                <span className="text-xs font-medium text-slate-600">+91 80 3132 1629</span>
               </div>
               <div className="h-5 w-px bg-slate-200 mx-1 hidden sm:block"></div>
               <div className="flex items-center gap-3 cursor-pointer p-1 pr-2 rounded-full hover:bg-slate-50 transition-colors">

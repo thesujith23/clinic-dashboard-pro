@@ -54,7 +54,7 @@ export function CallLogsTable() {
   const displayLogs = isDemoMode ? DEMO_LOGS : logs;
 
   const filteredLogs = displayLogs.filter(log => {
-    const targetNumber = "918031336259";
+    const targetNumber = "918031321629";
     const fromStr = String(log.from_number || log.from || "").replace(/\D/g, "");
     const toStr = String(log.to_number || log.to || "").replace(/\D/g, "");
     return fromStr.includes(targetNumber) || toStr.includes(targetNumber);
@@ -91,7 +91,7 @@ export function CallLogsTable() {
         </div>
       ) : filteredLogs.length === 0 ? (
         <div className="py-24 text-center text-sm text-slate-500">
-          No call logs found for +91 80 3133 6259.
+          No call logs found for +91 80 3132 1629.
         </div>
       ) : (
         <ScrollArea className="w-full">
